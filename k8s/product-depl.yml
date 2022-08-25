@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: product
-          image: gcr.io/souravdeveloper/ecom-product
+          image: souravdeveloper/ecom-product
           env:
             - name: MONGO_URI
               value: 'mongodb+srv://sourav:<password>@cluster0.n0fpzmr.mongodb.net/?retryWrites=true&w=majority'
