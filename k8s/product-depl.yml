@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: product
+  template:
+    metadata:
+      labels:
+        app: product
+    spec:
+      containers:
+        - name: product
+          image: gcr.io/souravdeveloper/ecom-product
+          env:
+            - name: MONGO_URI
+              value: 'mongodb+srv://sourav:<password>@cluster0.n0fpzmr.mongodb.net/?retryWrites=true&w=majority'
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
+            - name: USER_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: USER_NAME
+            - name: USER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: USER_PASSWORD
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: product-srv
+spec:
+  selector:
+    app: product
+  ports:
+    - name: product
+      targetPort: 4000
+      port: 4000
+      protocol: TCP
